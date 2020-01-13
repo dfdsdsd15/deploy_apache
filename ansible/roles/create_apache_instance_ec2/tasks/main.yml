@@ -1,0 +1,60 @@
+---
+# tasks file for create_apache_instance_ec2
+ - name               : Create a security Group with Port 22,80,81,443 and ICMP Open to 0.0.0.0/0
+   ec2_group:
+     name             : "{{ security_group }}"
+     description      : Security Group for Servers with port 22,80,81,443 and ICMP Open
+     region           : "{{ region }}"
+     rules:
+       - proto        : icmp
+         from_port    : 8
+         to_port      : -1
+         cidr_ip      : 0.0.0.0/0
+       - proto        : tcp
+         from_port    : 22
+         to_port      : 22
+         cidr_ip      : 0.0.0.0/0
+       - proto        : tcp
+         from_port    : 81
+         to_port      : 81
+         cidr_ip      : 0.0.0.0/0
+       - proto        : tcp
+         from_port    : 80
+         to_port      : 80
+         cidr_ip      : 0.0.0.0/0
+       - proto        : tcp
+         from_port    : 443
+         to_port      : 443
+         cidr_ip      : 0.0.0.0/0
+     rules_egress:
+       - proto        : all
+         cidr_ip      : 0.0.0.0/0
+     aws_access_key   : "{{ aws_access_key }}"
+     aws_secret_key   : "{{ aws_secret_key }}"
+
+ - name               : Create New AWS EC2 Server
+   ec2:
+     key_name         : "{{ keypair }}"
+     instance_type    : "{{ instance_type }}"
+     image            : "{{ image }}"
+     group            : "{{ security_group }}"
+     region           : "{{ region }}"
+     instance_tags    :
+       Name           : AnsibleDeployment
+       Type           : Apache-EC2-for-DBI
+     count            : "{{ count }}"
+     wait             : true
+     vpc_subnet_id    : "{{ subnet_id }}"
+     assign_public_ip : yes
+     aws_access_key   : "{{ aws_access_key }}"
+     aws_secret_key   : "{{ aws_secret_key }}"
+   register           : ec2                                # Start Creation of AWS EC2 Server
+
+ - name               : Print all EC2 variables
+   debug:
+     var: ec2
+
+ - name               : Print EC2 instance Public IP Address
+   debug:
+     var: ec2.instances[0].public_ip
+...

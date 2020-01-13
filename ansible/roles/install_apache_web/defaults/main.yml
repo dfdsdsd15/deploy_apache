@@ -1,0 +1,4 @@
+---
+# defaults file for install_apache_web
+destin_folder: /var/www/html
+...

@@ -1,0 +1,76 @@
+---
+# tasks file for change_root_dir_apache_web
+
+- name: Check Linux Distrib family
+  debug: var=ansible_os_family
+
+## Generate httpd.conf file and copy it to apache_conf_folder variable
+
+- name: Generate httpd.conf file
+  template:
+    src: "httpd.conf.j2"
+    dest: "{{ apache_conf_folder }}/httpd.conf"
+  notify:
+#    - Restart Apache Debian
+    - Restart Apache RedHat
+
+## Make new apache root dir
+
+- name: Make new Apache Root Dir
+  file:
+    path: "{{ apache_root_dir }}"
+    state: directory
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+    remote_src: yes
+  notify:
+    - SELinux add in table
+
+#- name: Copy old Site to new dest
+#  synchronize:
+#    mode: pull
+#    src: "{{ destin_folder }}"
+#    dest: "{{ apache_root_dir }}"
+#    rsync_opts:
+#    - "--remove-source-files"
+#  notify:
+#    - SELinux restorecon
+
+- name: Copy site to new dir
+  copy:
+    src: "{{ destin_folder }}"
+    dest: "{{ apache_root_dir }}"
+#    owner: apache
+#    group: apache
+#    mode: '0755'
+    remote_src: yes
+
+- name: Change owner 755
+  file:
+    path: "{{ apache_root_dir }}"
+    state: directory
+    recurse: yes
+    owner: apache
+    group: apache
+    mode: '0755'
+    remote_src: yes
+
+- name: Change owner 644
+  file:
+    path: '{{ apache_root_dir }}/*'
+    state: directory
+    recurse: yes
+    owner: apache
+    group: apache
+    mode: '0644'
+    remote_src: yes
+
+## uncomment next task if need to remove old sites from /var/www/html
+
+#- name: Remove old Sites dir
+#  file:
+#    state: absent
+#    path: "{{ destin_folder }}"
+
+...

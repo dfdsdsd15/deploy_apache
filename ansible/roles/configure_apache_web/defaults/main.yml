@@ -1,0 +1,6 @@
+---
+# defaults file for configure_apache_web
+
+apache_conf_file: /etc/httpd/conf/httpd.conf
+destin_folder: /var/www/html
+...

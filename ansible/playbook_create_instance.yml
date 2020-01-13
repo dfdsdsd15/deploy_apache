@@ -1,0 +1,13 @@
+---
+- name: Create AWS EC2 Instance
+
+  hosts: local
+  connection: local
+  gather_facts: false
+
+
+  roles:
+#   - { roles: deploy_apache_web, when: ansible_system == 'Linux' }
+    - create_apache_instance_ec2
+
+...

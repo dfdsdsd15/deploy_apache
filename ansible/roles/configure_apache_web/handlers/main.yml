@@ -1,0 +1,18 @@
+---
+# handlers file for counfigure_apache_web
+
+- name: Restart Apache RedHat
+  service: name=httpd state=reloaded
+  when: ansible_os_family == "RedHat"
+
+- name: SELinux add in table
+  sefcontext:
+    target: '{{ destin_folder }}(/.*)?'
+    setype: httpd_sys_content_t
+    seuser: system_u
+    state: present
+
+- name: SELinux restorecon
+  command: restorecon -irv "{{ destin_folder }}"
+
+...

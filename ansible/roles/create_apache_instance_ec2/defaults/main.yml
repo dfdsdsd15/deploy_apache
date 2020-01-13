@@ -1,0 +1,12 @@
+---
+# defaults file for create_apache_instance_ec2
+keypair         : KEYPAIR_NAME                                          # Name of KeyPair as written in AWS Console
+instance_type   : t2.micro                                           # Type of EC2 Server to create
+region          : us-east-2                                          # Name of Region
+image           : ami-0520e698dd500b1d1                              # AMI of Server in this region
+count           : 1                                                  # How many servers to create
+security_group  : Ansible-SecurityGroup                              # Name of SecurityGroup
+aws_access_key : AWS_EC2_ACCESS_KEY                                 # Credentials to Create AWS EC2
+aws_secret_key : AWS_EC2_SECRET_KEY                                 # Credentials to Create AWS EC2
+subnet_id      : SUBNET_ID                                          # VPC subnet ID from AWS web int
+...

@@ -1,0 +1,43 @@
+---
+# tasks file for install_apache_web
+
+- name: Check Linux Distrib family
+  debug: var=ansible_os_family
+
+#- block:   # ====== Install scenario for Debian =======
+#
+#  - name: Install Apache Web Server using APT
+#    apt: name=apache2 state=latest
+#
+#  - name: Start WebServer for Debian and make it enable on boot
+#    service: name=apache2 state=started enabled=yes
+
+# do all block if ansible_os_family returns "Debian"
+#  when: ansible_os_family == "Debian"
+
+################ Debian Scenario Ends ################
+
+- block:   # ====== Install scenario for RedHat =======
+    
+  - name: Install Apache Web Server using YUM
+    yum: name=httpd state=latest
+
+  - name: Install SEmanage package
+    yum: name=/usr/sbin/semanage state=latest
+
+  - name: Start WebServer for RedHat and make it enable on boot
+    service: name=httpd state=started enabled=yes
+
+# do all block it if ansible_os_family returns "RedHat"
+  when: ansible_os_family == "RedHat"
+
+################ RedHat Scenario Ends ################
+
+# Restarts Apache service
+#- name: Restart Apache Service
+#  debug: var=ansible_os_family
+#  notify:
+#    - Restart Apache Debian
+#    - Restart Apache RedHat
+
+...

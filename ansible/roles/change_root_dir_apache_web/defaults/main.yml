@@ -1,0 +1,10 @@
+---
+# defaults file for change_root_dir_apache_web
+
+# Variables for apache httpd.conf template
+apache_root_dir: /web
+apache_default_port: 81
+apache_conf_folder: /etc/httpd/conf
+apache_conf_file: /etc/httpd/conf/httpd.conf
+destin_folder: /var/www/html
+...

@@ -1,0 +1,42 @@
+---
+# tasks file for configure_apache_web
+
+- block:   # ====== Configure scenario for RedHat =======
+
+  - name: Backup original httpd.conf file
+    copy:
+      src: "{{ apache_conf_file }}"
+      dest: "{{ apache_conf_file }}.bak"
+      remote_src: yes
+
+#  - name: Clean config file from all comments
+#    command: sed -ie '/^[ \t]*#/d' "{{ apache_conf_file }}"
+     
+  - name: Change the default Apache port is 81
+    lineinfile:
+      path: "{{ apache_conf_file }}"
+      regexp: '^Listen '
+      insertafter: '^#Listen '
+      line: Listen 81
+
+# do all block it if ansible_os_family returns "RedHat"
+  when: ansible_os_family == "RedHat"
+
+################ RedHat Scenario Ends ################
+
+- name: Generate INDEX.html file
+  template:
+    src: index.html.j2
+    dest: "{{ destin_folder }}/index.html"
+    mode: 0555
+  notify:
+    - SELinux add in table
+    - SELinux restorecon
+    - Restart Apache RedHat
+
+# Restarts Apache service
+- name: Restart Apache Service
+  debug: var=ansible_os_family
+  notify:
+    - Restart Apache RedHat
+...

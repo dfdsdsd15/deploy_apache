@@ -1,0 +1,17 @@
+---
+#### This playbook will contain:
+#### Install apache to hosts,
+#### Primitive configuring apache,
+#### Mod SELinux on RHEL for new site,
+
+- name: Install_and_config_apache
+
+#  hosts: PROD
+  hosts: all
+  become: yes
+
+  roles:
+    - install_apache_web
+    - configure_apache_web
+    - change_root_dir_apache_web
+... 

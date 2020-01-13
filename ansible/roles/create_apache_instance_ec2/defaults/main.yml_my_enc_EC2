@@ -1,0 +1,25 @@
+---
+# defaults file for create_apache_instance_ec2
+keypair         : KEYPAIR_NAME                                                                                 # Name of KeyPair as written in AWS Console
+instance_type   : t2.micro                                                                                     # Type of EC2 Server to create
+region          : us-east-2                                                                                    # Name of Region
+image           : ami-0520e698dd500b1d1                                                                        # AMI of Server in this region
+count           : 1                                                                                            # How many servers to create
+security_group  : Ansible-SecurityGroup                                                                        # Name of SecurityGroup
+aws_access_key : !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          35633138336539656536393934663764303361303831373632306332383361653139356663386233
+          6233383239383265636534646535346139633664316433650a383466333237646333656534306237
+          39373839376233333163613731636566626431656632633835366137326265333062646363653738
+          3234613166373664330a396365333561613535306337636335333630646665653431636335323965
+          38376239363934633663633865623133323733666439373236353962316633306330                                 # Credentials to Create AWS EC2
+aws_secret_key : !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65346530313232316362636437656138396639663930656534643061373362386535646261373038
+          6562663364306330646665653965623832333130643632320a343562613930643133393336653738
+          37663137383637336638316331376463653466383635623262343466626231636336303337626464
+          6366613464663839350a386435633233366464323661383562626262663330343831616538313338
+          39343631393261316664353033666262336330623565316233663334303437643261383831303965
+          3038626139356232366166323833343933653535656635363165                                                 # Credentials to Create AWS EC2
+subnet_id      : SUBNET_ID                                                                                     # VPC subnet ID from AWS web int
+...

@@ -1,0 +1,15 @@
+# server name (alias) | host address or FQDN          | user (may be in ./group_vars) | where is ssh key (may be in ./group_vars)    |  variable or tag
+[local]
+localhost
+
+[apache_remote]
+prod_apache	        ansible_host=XXX.XXX.XXX.XXX                                                                                    location=aws
+
+[PROD:children]
+apache_remote
+
+[STAGING:children]
+
+[ALL_LINUX:children]
+PROD
+STAGING
